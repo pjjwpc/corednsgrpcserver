@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "betadnsadminserver/plugin/forward"
-	"betadnsadminserver/service"
+	_ "dnsadminserver/plugin/forward"
+	"dnsadminserver/service"
 	pb "github.com/coredns/coredns/pb"
 	"google.golang.org/grpc"
 	"log"

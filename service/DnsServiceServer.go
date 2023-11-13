@@ -1,8 +1,8 @@
 package service
 
 import (
-	"betadnsadminserver/config"
 	"context"
+	"dnsadminserver/config"
 	"log"
 
 	"github.com/coredns/coredns/pb"

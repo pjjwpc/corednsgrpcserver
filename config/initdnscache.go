@@ -1,8 +1,8 @@
 package config
 
 import (
-	"betadnsadminserver/models"
 	"context"
+	"dnsadminserver/models"
 	"fmt"
 	"log"
 	"net"
