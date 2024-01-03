@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package beta.dns.v1;
+
+service 

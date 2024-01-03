@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations: {}
+  labels:
+    k8s.kuboard.cn/name: dnsadminserver-statefulset
+  name: dnsadminserver-statefulset
+  namespace: beta-go
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: dnsadminserver
+  serviceName: dnsadminserver
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: dnsadminserver
+    spec:
+      containers:
+        - env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: ServicePort
+              value: '80'
+          image: 'harbor-dev.test.betawm.com/beta/dnsadminserver:v0.9'
+          imagePullPolicy: IfNotPresent
+          name: dnsadminserver
+          ports:
+            - containerPort: 80
+              name: grpc
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /beta/appsetting.json
+              name: volume-en3fp
+              subPath: appsetting.json
+            - mountPath: /beta/tools/
+              name: volume-xf6jp
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: betasecret
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: appsetting.json
+                path: appsetting.json
+            name: dnsadmin
+          name: volume-en3fp
+        - name: volume-xf6jp
+          nfs:
+            path: /beta/dnsadminserver
+            server: 172.17.12.111
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
