@@ -4,12 +4,15 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"strings"
 )
 
 // 定义配置结构体
 type AppConfig struct {
 	RedisConfig RedisConfig `json:"redisConfig"`
 	DbConfig    DbConfig    `json:"dbConfig"`
+	CacheFile   string      `json:"cacheFile"`
+	IsMaster    bool        `json:"isMaster"`
 }
 
 type RedisConfig struct {
@@ -44,6 +47,17 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	podIndexStr := os.Getenv("POD_NAME")
+	log.Println("podIndexStr:", podIndexStr)
+	isMaster := strings.HasSuffix(podIndexStr, "-0")
+	if isMaster {
+		log.Println("索引为0的pod为master")
+		Config.IsMaster = true
+	} else {
+		log.Println("索引不为0的pod为slave")
+		Config.IsMaster = false
+	}
+
 	initDB()
 	initRedis()
 }

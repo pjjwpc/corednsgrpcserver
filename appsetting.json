@@ -1,6 +1,6 @@
 {
     "redisConfig": {
-        "redisAddrs": "redis.betawm.beta:6379",
+        "redisAddrs": "redis-qa.test.betawm.com:6379",
         "redisPassword": "",
         "redisDb": 14,
         "redisMaxIdle": 0,
@@ -13,6 +13,8 @@
         "redisChannel": "betadnschange"
     },
     "dbConfig": {
-        "dsn": "root:betawm.com@tcp(172.17.12.75:3306)/beta_envoy_control_plan?charset=utf8mb4&parseTime=True&loc=Local"
-    }
+        "dsn": "root:betawm.com@tcp(172.17.12.37:3306)/beta_envoy_control_plan?charset=utf8mb4&parseTime=True&loc=Local"
+    },
+    "isMaster": true,
+    "cachefile": "/beta/tools/dnscache"
 }

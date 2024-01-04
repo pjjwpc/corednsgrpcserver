@@ -5,7 +5,7 @@ import (
 )
 
 type DnsRecords struct {
-	Id          int       `gorm:"column:id;primary_key"`
+	Id          int64     `gorm:"column:id;primary_key"`
 	ClusterName string    `gorm:"column:cluster_name"`
 	Name        string    `gorm:"column:name"`
 	Qtype       uint16    `gorm:"column:qtype"`
@@ -19,5 +19,19 @@ type DnsRecords struct {
 }
 
 func (DnsRecords) TableName() string {
+	return "dns_records"
+}
+
+type SampleDnsRecords struct {
+	Id          int64  `gorm:"column:id;primary_key"`
+	ClusterName string `gorm:"column:cluster_name"`
+	Name        string `gorm:"column:name"`
+	Qtype       uint16 `gorm:"column:qtype"`
+	Qclass      uint16 `gorm:"column:qclass"`
+	Ttl         uint32 `gorm:"column:ttl"`
+	Rdata       string `gorm:"column:rdata"`
+}
+
+func (SampleDnsRecords) TableName() string {
 	return "dns_records"
 }

@@ -1,26 +1,31 @@
 package main
 
 import (
-	_ "dnsadminserver/plugin/forward"
-	"dnsadminserver/service"
-	pb "github.com/coredns/coredns/pb"
-	"google.golang.org/grpc"
+	_ "betadnsadminserver/plugin/forward"
+	"betadnsadminserver/service"
+	"fmt"
 	"log"
 	"net"
+
+	"os"
+
+	pb "github.com/coredns/coredns/pb"
+	"google.golang.org/grpc"
 )
 
 func main() {
+	servicePort := os.Getenv("ServicePort")
+	if servicePort == "" {
+		servicePort = "8050"
+	}
 	grpcServer := grpc.NewServer()
-	lis, err := net.Listen("tcp", ":8050")
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", servicePort))
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// Register the service with the server
 
 	pb.RegisterDnsServiceServer(grpcServer, &service.BetaDnsServiceServer{})
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatal(err)
 	}
-
 }
