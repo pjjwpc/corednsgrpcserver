@@ -1,8 +1,7 @@
 package main
 
 import (
-	_ "betadnsadminserver/plugin/forward"
-	"betadnsadminserver/service"
+	"dnsadminserver/internal/service"
 	"fmt"
 	"log"
 	"net"
@@ -24,7 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pb.RegisterDnsServiceServer(grpcServer, &service.BetaDnsServiceServer{})
+	pb.RegisterDnsServiceServer(grpcServer, &service.DnsServiceServer{})
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatal(err)
 	}

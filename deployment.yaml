@@ -6,7 +6,7 @@ metadata:
   labels:
     k8s.kuboard.cn/name: dnsadminserver-statefulset
   name: dnsadminserver-statefulset
-  namespace: beta-go
+  namespace: dev-go
 spec:
   podManagementPolicy: OrderedReady
   replicas: 3
@@ -30,7 +30,7 @@ spec:
                   fieldPath: metadata.name
             - name: ServicePort
               value: '80'
-          image: 'harbor-dev.test.betawm.com/beta/dnsadminserver:v0.9'
+          image: 'harbor.wangp/dev/dnsadminserver:v0.9'
           imagePullPolicy: IfNotPresent
           name: dnsadminserver
           ports:
@@ -41,16 +41,16 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-            - mountPath: /beta/appsetting.json
+            - mountPath: /dev/appsetting.json
               name: volume-en3fp
               subPath: appsetting.json
-            - mountPath: /beta/tools/
+            - mountPath: /dev/tools/
               name: volume-xf6jp
       dnsPolicy: ClusterFirst
       imagePullSecrets:
-        - name: betasecret
+        - name: devsecret
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        dev.kubernetes.io/os: linux
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
@@ -65,8 +65,8 @@ spec:
           name: volume-en3fp
         - name: volume-xf6jp
           nfs:
-            path: /beta/dnsadminserver
-            server: 172.17.12.111
+            path: /dev/dnsadminserver
+            server: 102.168.0.5
   updateStrategy:
     rollingUpdate:
       partition: 0

@@ -1,8 +1,8 @@
 package config
 
 import (
-	"betadnsadminserver/models"
 	"context"
+	"dnsadminserver/internal/models"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -14,12 +14,12 @@ import (
 	"github.com/miekg/dns"
 )
 
-var DnsRecordsCache map[string][]models.BetaDnsRR
+var DnsRecordsCache map[string][]models.DnsRR
 
-func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
+func buildDR(v models.DnsRecords) (dr models.DnsRR) {
 	switch v.Qtype {
 	case dns.TypeA:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.A{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -32,7 +32,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeAAAA:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.AAAA{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -44,7 +44,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			}, Id: v.Id,
 		}
 	case dns.TypeCNAME:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.CNAME{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -57,7 +57,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeTXT:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.TXT{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -70,7 +70,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeMX:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.MX{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -83,7 +83,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeNS:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.NS{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -96,7 +96,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeSRV:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.SRV{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -109,7 +109,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeSOA:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.SOA{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -122,7 +122,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypePTR:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.PTR{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -135,7 +135,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeCAA:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.CAA{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -148,7 +148,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeNAPTR:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.NAPTR{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -162,7 +162,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 		}
 
 	case dns.TypeTLSA:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.TLSA{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -175,7 +175,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeDS:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.DS{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -188,7 +188,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeSSHFP:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.SSHFP{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -203,7 +203,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 	case dns.TypeDNSKEY:
 		log.Println("暂未支持DNSKEY")
 	case dns.TypeRRSIG:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.RRSIG{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -216,7 +216,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeNSEC:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.NSEC{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -229,7 +229,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeNSEC3:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.NSEC3{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -242,7 +242,7 @@ func buildDR(v models.DnsRecords) (dr models.BetaDnsRR) {
 			Id: v.Id,
 		}
 	case dns.TypeNSEC3PARAM:
-		return models.BetaDnsRR{
+		return models.DnsRR{
 			DnsRR: &dns.NSEC3PARAM{
 				Hdr: dns.RR_Header{
 					Name:   v.Name,
@@ -264,7 +264,7 @@ func buildDnsRecordsCache(dnsRecordsList []models.DnsRecords, clear bool) {
 	for _, v := range dnsRecordsList {
 		keyname := v.ClusterName + "-" + fmt.Sprint(v.Qtype) + "-" + v.Name
 		if clear && !clearKey[keyname] {
-			DnsRecordsCache[keyname] = []models.BetaDnsRR{}
+			DnsRecordsCache[keyname] = []models.DnsRR{}
 			clearKey[keyname] = true // 防止重复清理
 		}
 		dr := buildDR(v)
@@ -276,7 +276,7 @@ func buildDnsRecordsCache(dnsRecordsList []models.DnsRecords, clear bool) {
 }
 
 func init() {
-	DnsRecordsCache = make(map[string][]models.BetaDnsRR)
+	DnsRecordsCache = make(map[string][]models.DnsRR)
 	go subRedis()
 	// 查询所有的域名放入内存缓存
 	DnsRecordsList := getDnsRecords(0, "", "")
@@ -364,7 +364,7 @@ func subRedis() {
 			}
 			cacheDr, ok := DnsRecordsCache[op_signal[0]]
 			if ok {
-				result := []models.BetaDnsRR{}
+				result := []models.DnsRR{}
 				for i, v := range cacheDr {
 					id, err := strconv.ParseInt(op_signal[1], 10, 64)
 					if err != nil {

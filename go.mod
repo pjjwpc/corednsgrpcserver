@@ -1,4 +1,4 @@
-module betadnsadminserver
+module dnsadminserver
 
 go 1.21
 

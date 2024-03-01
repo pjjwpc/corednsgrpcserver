@@ -1,8 +1,8 @@
 package service
 
 import (
-	"betadnsadminserver/config"
 	"context"
+	"dnsadminserver/internal/config"
 	"fmt"
 	"log"
 
@@ -12,11 +12,11 @@ import (
 	// "google.golang.org/grpc/peer"
 )
 
-type BetaDnsServiceServer struct {
+type DnsServiceServer struct {
 	pb.UnimplementedDnsServiceServer
 }
 
-func (s *BetaDnsServiceServer) Query(ctx context.Context, req *pb.DnsPacket) (resp *pb.DnsPacket, err error) {
+func (s *DnsServiceServer) Query(ctx context.Context, req *pb.DnsPacket) (resp *pb.DnsPacket, err error) {
 	reqMsg := new(dns.Msg)
 	err = reqMsg.Unpack(req.Msg)
 	if err != nil {

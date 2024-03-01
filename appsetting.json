@@ -1,6 +1,6 @@
 {
     "redisConfig": {
-        "redisAddrs": "redis-qa.test.betawm.com:6379",
+        "redisAddrs": "redis.wangpc:6379",
         "redisPassword": "",
         "redisDb": 14,
         "redisMaxIdle": 0,
@@ -9,12 +9,12 @@
         "redisConnectTimeout": 0,
         "redisReadTimeout": 0,
         "redisWriteTimeout": 0,
-        "redisPrefix": "betacoredns_",
-        "redisChannel": "betadnschange"
+        "redisPrefix": "coredns_",
+        "redisChannel": "dnschange"
     },
     "dbConfig": {
-        "dsn": "root:betawm.com@tcp(172.17.12.37:3306)/beta_envoy_control_plan?charset=utf8mb4&parseTime=True&loc=Local"
+        "dsn": "root:123123@tcp(mysql.wangp:3306)/envoy_admin?charset=utf8mb4&parseTime=True&loc=Local"
     },
     "isMaster": true,
-    "cachefile": "/beta/tools/dnscache"
+    "cachefile": "/tools/dnscache"
 }
